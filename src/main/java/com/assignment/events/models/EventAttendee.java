@@ -20,51 +20,51 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Table(name="events_attendees")
 public class EventAttendee {
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-	
-    @Column(updatable=false)
-    @DateTimeFormat(pattern="yy-MM-dd")
-    private Date createdAt;
-    
-    @DateTimeFormat(pattern="yy-MM-dd")
-    private Date updatedAt;
-    
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="user_id")
-    private User attendee;
-    
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="event_id")
-    private Event event;
-    
-//    CONSTRUCTORS
-//    ------------------------------
-    
-    public EventAttendee() {
-    	
-    }
-    
-    public EventAttendee(User attendee, Event event) {
-    	this.event = event;
-    	this.attendee = attendee;
-    }
-    
-    //    PrePersist and PreUpdate
-//    ------------------------------
-    
-    @PrePersist
-    protected void onCreate() {
-    	this.createdAt = new Date();
-    }
-    @PreUpdate
-    protected void onUpdate() {
-    	this.updatedAt = new Date();
-    }
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-//    GETTERS AND SETTERS
-//    ----------------------------------
-    
+	@Column(updatable=false)
+	@DateTimeFormat(pattern="yy-MM-dd")
+	private Date createdAt;
+
+	@DateTimeFormat(pattern="yy-MM-dd")
+	private Date updatedAt;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="user_id")
+	private User attendee;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="event_id")
+	private Event event;
+
+	//    CONSTRUCTORS
+	//    ------------------------------
+
+	public EventAttendee() {
+
+	}
+
+	public EventAttendee(User attendee, Event event) {
+		this.event = event;
+		this.attendee = attendee;
+	}
+
+	//    PrePersist and PreUpdate
+	//    ------------------------------
+
+	@PrePersist
+	protected void onCreate() {
+		this.createdAt = new Date();
+	}
+	@PreUpdate
+	protected void onUpdate() {
+		this.updatedAt = new Date();
+	}
+
+	//    GETTERS AND SETTERS
+	//    ----------------------------------
+
 	public Long getId() {
 		return id;
 	}

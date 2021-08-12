@@ -171,11 +171,11 @@ public class Event {
 	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-	
+
 	public List<Message> getMessages() {
 		return messages;
 	}
-	
+
 	public void setMessages(List<Message> messages) {
 		this.messages = messages;
 	}

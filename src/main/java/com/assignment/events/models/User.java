@@ -29,62 +29,62 @@ public class User {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@NotNull(message="Please enter a first name!")
 	@Size(min=2, max=100, message="First name must be 2-100 characters long!")
 	private String firstName;
-	
+
 	@NotNull(message="Please enter a last name!")
 	@Size(min=2, max=100, message="Last name must be 2-100 characters long!")
 	private String lastName;
-	
+
 	@NotNull(message="Please enter an email!")
 	@Email(message="Please enter a valid email address!")
 	@Size(min=2, max=100, message="Email must be between 2-100 characters!")
 	private String email;
-	
+
 	@NotNull(message="Please enter your location!")
 	@Size(min=2, message="Location must be at least 2 characters long!")
 	private String location;
-	
+
 	@NotNull(message="Please enter you state!")
 	@Size(min=2, message="State must be at least 2 characters long!")
 	private String state;
-	
+
 	@NotNull(message="Please enter a password!")
 	@Size(min=5, message="Password must be at least 5 characters long!")
 	private String password;
-	
+
 	@Transient
 	private String passwordConfirmation;
-	
+
 	@Column(updatable=false)
-    @DateTimeFormat(pattern="yy-MM-dd")
+	@DateTimeFormat(pattern="yy-MM-dd")
 	private Date createdAt;
 
 	@DateTimeFormat(pattern="yy-MM-dd")
 	private Date updatedAt;
-    
-//    one to many field: one user can be creator of many events
-    @OneToMany(mappedBy="host", fetch = FetchType.LAZY)
-    private List<Event> events;
-    
+
+	//    one to many field: one user can be creator of many events
+	@OneToMany(mappedBy="host", fetch = FetchType.LAZY)
+	private List<Event> events;
+
 
 	//    many to many field: one event can have many attendees one person can attend many events
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-        name = "events_attendees", 
-        joinColumns = @JoinColumn(name = "user_id"), 
-        inverseJoinColumns = @JoinColumn(name = "event_id")
-    )     
-    private List<Event> joinedEvents;
-    
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(
+			name = "events_attendees", 
+			joinColumns = @JoinColumn(name = "user_id"), 
+			inverseJoinColumns = @JoinColumn(name = "event_id")
+			)     
+	private List<Event> joinedEvents;
+
 	//one to many field: one user can write many messages
 	@OneToMany(mappedBy="commenter", fetch = FetchType.LAZY)
 	private List<Message> comments;
-    
-//    CONSTRUCTORS
-//    ---------------------------------
+
+	//    CONSTRUCTORS
+	//    ---------------------------------
 
 	public User() {
 	}
@@ -98,9 +98,9 @@ public class User {
 		this.password = password;
 	}
 
-//	PrePersist and PreUpdate methods
-//	-------------------------------------
-	
+	//	PrePersist and PreUpdate methods
+	//	-------------------------------------
+
 	@PrePersist
 	protected void onCreate(){
 		this.createdAt = new Date();
@@ -109,9 +109,9 @@ public class User {
 	protected void onUpdate(){
 		this.updatedAt = new Date();
 	}
-	
-//	GETTERS AND SETTERS
-//	------------------------------------
+
+	//	GETTERS AND SETTERS
+	//	------------------------------------
 
 	public Long getId() {
 		return id;
@@ -144,7 +144,7 @@ public class User {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+
 	public String getLocation() {
 		return location;
 	}
@@ -176,7 +176,7 @@ public class User {
 	public void setPasswordConfirmation(String passwordConfirmation) {
 		this.passwordConfirmation = passwordConfirmation;
 	}
-	
+
 	public List<Event> getEvents() {
 		return events;
 	}
@@ -184,9 +184,9 @@ public class User {
 	public void setEvents(List<Event> events) {
 		this.events = events;
 	}
-	
 
-    public List<Event> getJoinedEvents() {
+
+	public List<Event> getJoinedEvents() {
 		return joinedEvents;
 	}
 
@@ -214,7 +214,7 @@ public class User {
 	public List<Message> getComments() {
 		return comments;
 	}
-	
+
 	public void setComments(List<Message> comments) {
 		this.comments = comments;
 	}

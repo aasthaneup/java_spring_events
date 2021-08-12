@@ -18,7 +18,6 @@ public class UserService {
 
 	//	register user and hash their password
 	//  ---------------------------------------
-
 	public User registerUser(User user) {
 		String hashed = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
 		user.setPassword(hashed);
@@ -27,14 +26,12 @@ public class UserService {
 
 	//	find user by email
 	//	---------------------------------------
-
 	public User findByEmail(String email) {
 		return userRepository.findByEmail(email);
 	}
 
 	//	find user by id
 	//	---------------------------------------
-
 	public User findUserById(Long id) {
 		Optional<User> u = userRepository.findById(id);
 
@@ -47,7 +44,6 @@ public class UserService {
 
 	//	authenticate user during login
 	//	---------------------------------------
-
 	public boolean authenticateUser(String email, String password) {
 		// first find the user by email
 		User user = userRepository.findByEmail(email);

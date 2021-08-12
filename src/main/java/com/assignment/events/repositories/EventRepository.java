@@ -10,7 +10,7 @@ import com.assignment.events.models.Event;
 
 @Repository
 public interface EventRepository extends CrudRepository<Event, Long>{
-	
+
 	List<Event> findAll();
 	void deleteById(Long id);
 	Event save(Event event);

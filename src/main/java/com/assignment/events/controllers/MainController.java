@@ -42,7 +42,6 @@ public class MainController {
 
 	//	Route for registering a new user
 	//	-----------------------------------------
-
 	@RequestMapping(value="/registration", method=RequestMethod.POST)
 	public String register(@Valid @ModelAttribute("user") User user, BindingResult result, HttpSession session) {
 		userValidator.validate(user, result);
@@ -57,7 +56,6 @@ public class MainController {
 
 	//	Route for registering a new user
 	//	-----------------------------------------
-
 	@RequestMapping(value="/login", method=RequestMethod.POST)
 	public String loginUser(
 			@RequestParam("email") String email, 
@@ -81,7 +79,6 @@ public class MainController {
 
 	//	get route to the events page
 	//	------------------------------------
-
 	@RequestMapping("/events")
 	public String dashboard(Model model, HttpSession session, RedirectAttributes redirect) {
 		//		allow access to dashboard only if user is in session
@@ -100,15 +97,14 @@ public class MainController {
 
 		}
 	}
-	
+
 	//	Route for adding a new event
 	//	-----------------------------------------
-
 	@RequestMapping(value="/events", method=RequestMethod.POST)
 	public String register(@Valid @ModelAttribute("event") Event event, BindingResult result, HttpSession session, Model model) {
-	
-//		model.addAttribute("event", new Event());
-		
+
+		//		model.addAttribute("event", new Event());
+
 		User logged_user = userService.findUserById((Long) session.getAttribute("userId"));
 		model.addAttribute("logged_user", logged_user);
 		model.addAttribute("eventsInState", eventService.findEventsInState(logged_user.getState()));
@@ -120,10 +116,10 @@ public class MainController {
 			return "redirect:/events";
 		}
 	}
-	
-	
-//	joining the user to an event
-//	---------------------
+
+
+	//	joining the user to an event
+	//	---------------------
 	@RequestMapping(value="/events/{id}/join", method=RequestMethod.POST)
 	public String joinAsAttendee(@RequestParam("attendeeId") Long attendeeId, @RequestParam("eventId") Long eventId) {
 		User attendee = userService.findUserById(attendeeId);
@@ -133,10 +129,9 @@ public class MainController {
 		return "redirect:/events";
 	}
 
-	
+
 	//	canceling the user from an event
-//	--------------------------------
-	
+	//	--------------------------------
 	@RequestMapping(value="/events/{id}/cancel", method=RequestMethod.POST)
 	public String cancelAttendee(@RequestParam("attendeeId") Long attendeeId, @RequestParam("eventId") Long eventId) {
 		User attendee = userService.findUserById(attendeeId);
@@ -145,25 +140,23 @@ public class MainController {
 		eventService.deleteRelationship(eveAttObject);
 		return "redirect:/events";
 	}
-	
-//	edit page route
-//	--------------------------------------
-	
+
+	//	edit page route
+	//	--------------------------------------
 	@RequestMapping(value="/events/{id}/edit")
 	public String editPage(@PathVariable("id") Long id, Model model, HttpSession session, RedirectAttributes redirect) {
 		if(session.getAttribute("userId") != null){	
-		model.addAttribute("event", eventService.findEvent(id));
-		return "edit.jsp";
+			model.addAttribute("event", eventService.findEvent(id));
+			return "edit.jsp";
 		}
 		else {
 			redirect.addFlashAttribute("accessError", "*** Please login or register before attempting to access the dashboard!! ***");
 			return "redirect:/";
 		}
 	}
-	
-//	update route for event:
-//	----------------------------------------
-	
+
+	//	update route for event:
+	//	----------------------------------------
 	@RequestMapping(value="/events/{id}/edit", method=RequestMethod.PUT)
 	public String updateEvent(@Valid @ModelAttribute("event") Event event, BindingResult result) {
 		if(result.hasErrors()) {
@@ -173,32 +166,30 @@ public class MainController {
 			return "redirect:/events";
 		}
 	}
-	
-//	view event page route
-//	--------------------------------------
-	
+
+	//	view event page route
+	//	--------------------------------------
 	@RequestMapping("/events/{id}")
 	public String viewPage(@PathVariable("id") Long id, Model model, HttpSession session, RedirectAttributes redirect) {
-		
+
 		if(session.getAttribute("userId") != null){	
-		Event eve = eventService.findEvent(id);
-		model.addAttribute("count", eve.getAttendees().size());
-		model.addAttribute("event", eve);
-		model.addAttribute("message", new Message());
-		User logged_user = userService.findUserById((Long) session.getAttribute("userId"));
-		model.addAttribute("logged_user", logged_user);
-		model.addAttribute("messages", eventService.findEvent(id).getMessages());
-		return "view.jsp";
+			Event eve = eventService.findEvent(id);
+			model.addAttribute("count", eve.getAttendees().size());
+			model.addAttribute("event", eve);
+			model.addAttribute("message", new Message());
+			User logged_user = userService.findUserById((Long) session.getAttribute("userId"));
+			model.addAttribute("logged_user", logged_user);
+			model.addAttribute("messages", eventService.findEvent(id).getMessages());
+			return "view.jsp";
 		}
 		else {
 			redirect.addFlashAttribute("accessError", "*** Please login or register before attempting to access the dashboard!! ***");
 			return "redirect:/";
 		}
 	}
-	
-//	Posting a comment
-//	------------------------------
-	
+
+	//	Posting a comment
+	//	------------------------------
 	@RequestMapping(value="/message/{id}", method=RequestMethod.POST)
 	public String postMessage(@Valid @ModelAttribute("message") Message message, BindingResult result, Model model, @PathVariable("id") Long id) {
 		if(result.hasErrors()) {
@@ -210,27 +201,24 @@ public class MainController {
 			eventService.saveMessage(message);
 			return "redirect:/events/"+id;
 		}
-		
-		
+
+
 	}
-	
-//	delete event route
-//	---------------------------------
-	
+
+	//	delete event route
+	//	---------------------------------
 	@RequestMapping(value="/events/{id}", method=RequestMethod.DELETE)
 	public String deleteEvent(@PathVariable("id") Long id) {
 		eventService.deleteEvent(id);
 		return "redirect:/events";
 	}
-	
+
 
 	//	logout and clear session:
 	//	-----------------------------------
-
 	@RequestMapping("/logout")
 	public String logout(HttpSession session) {
 		session.invalidate();
 		return "redirect:/";
 	}
-
 }

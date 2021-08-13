@@ -77,7 +77,7 @@ public class Event {
 		this.location = location;
 		this.state = state;
 	}
-	
+
 	//	PrePersist and PreUpdate methods
 	//	------------------------------------
 	@PrePersist
